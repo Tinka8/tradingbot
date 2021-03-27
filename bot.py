@@ -9,4 +9,4 @@ class Bot:
     def welcome(self):
 
         return self.welcome_text
-        print(welcome())
+ 
