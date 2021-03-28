@@ -1,6 +1,6 @@
 import os
-from bot import Bot
 import logging
+from bot import Bot
 from datetime import date
 
 # welcome message
