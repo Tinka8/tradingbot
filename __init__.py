@@ -3,10 +3,6 @@ import logging
 from bot import Bot
 from datetime import date
 
-# welcome message
-message = Bot()
-print(message.welcome())
-
 # current date
 today = date.today()
 
@@ -19,8 +15,11 @@ if (os.environ['LOGGING_MODE']) == 'daily':
 # setting logging library       
 logging.basicConfig(filename=logging_filename, format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
 
-# logging messages
+# logging message
 logging.info('Started')
-logging.debug('Welcome text printed')
 
+# welcome message
+message = Bot()
+print(message.welcome())
+logging.debug('Welcome text printed')
 
