@@ -18,8 +18,9 @@ logging.basicConfig(filename=logging_filename, format='%(asctime)s - %(levelname
 # logging message
 logging.info('Started')
 
-# welcome message
+
 message = Bot()
+# welcome message
 print(message.welcome())
 logging.debug('Welcome text printed')
 
