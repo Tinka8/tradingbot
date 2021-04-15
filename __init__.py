@@ -1,7 +1,15 @@
 import os
 import logging
+import subprocess
 from bot import Bot
 from datetime import date
+
+# run integrity checks
+result = subprocess.call("pipenv run python integrity.py", shell=True)
+
+# exit if error is returned
+if (result == 1):
+    exit(1)
 
 # current date
 today = date.today()
