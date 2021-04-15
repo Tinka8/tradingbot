@@ -16,4 +16,6 @@ def log_die(message):
 # 1001 check if logging mode is set
 if "LOGGING_MODE" not in os.environ:
     log_die('[1001] Logging mode environment variable is not set')
-    
+# 1002 check if logging mode is set to single or daily
+if (os.environ['LOGGING_MODE']) != "single" and (os.environ['LOGGING_MODE']) != "daily":
+     log_die('[1002] Logging mode has invalid value (supported values "daily", "single")')
