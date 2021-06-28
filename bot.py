@@ -1,6 +1,7 @@
 import os
 import enum 
 import json
+from websocket import create_connection
 class STATUS(enum.Enum):
     LOGGED = enum.auto()
     NOT_LOGGED = enum.auto()
@@ -28,4 +29,21 @@ class Bot:
             logging.info('Executed command: ' + dict_data["command"])
 
         return result
+        
+    def login(self, user_id, password, mode='demo'):
+        """login command"""
+
+        data = {
+            "command": "login",
+            "arguments" : {
+                "userId": user_id,
+                "password": password
+            }
+        }
+
+        self.ws = create_connection(f"wss://ws.xtb.com/{mode}")
+        response = self._send_command(data)
+        self.status = STATUS.LOGGED
+
+        return response
  
