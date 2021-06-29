@@ -1,6 +1,7 @@
 import os
 import enum 
 import json
+import logging
 from websocket import create_connection
 class STATUS(enum.Enum):
     LOGGED = enum.auto()
@@ -15,20 +16,6 @@ class Bot:
     def welcome(self):
 
         return self.welcome_text
-    
-    def _send_command(self, dict_data):
-        """send command to api"""
-
-        logging.info('Sending command: ' + dict_data["command"])
-        
-        self.ws.send(json.dumps(dict_data))
-        response = self.ws.recv()
-        
-        result = json.loads(response)
-        if result['status'] is True:
-            logging.info('Executed command: ' + dict_data["command"])
-
-        return result
         
     def login(self, user_id, password, mode='demo'):
         """login command"""
@@ -46,4 +33,18 @@ class Bot:
         self.status = STATUS.LOGGED
 
         return response
- 
+
+    def _send_command(self, dict_data):
+        """send command to api"""
+
+        logging.info('Sending command: ' + dict_data["command"])
+        
+        self.ws.send(json.dumps(dict_data))
+        response = self.ws.recv()
+        
+        result = json.loads(response)
+        if result['status'] is True:
+            logging.info('Executed command: ' + dict_data["command"])
+
+        return result
+    
