@@ -32,3 +32,6 @@ message = Bot()
 print(message.welcome())
 logging.debug('Welcome text printed')
 
+# login user
+message.login(os.environ['userId'], os.environ['password'])
+print("Successfully logged in")
