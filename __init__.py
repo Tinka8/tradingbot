@@ -33,5 +33,5 @@ print(message.welcome())
 logging.debug('Welcome text printed')
 
 # login user
-message.login(os.environ['userId'], os.environ['password'])
+message.login(os.environ['USER_ID'], os.environ['PASSWORD'])
 print("Successfully logged in")
