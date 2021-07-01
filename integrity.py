@@ -19,3 +19,9 @@ if "LOGGING_MODE" not in os.environ:
 # 1002 check if logging mode is set to single or daily
 if (os.environ['LOGGING_MODE']) != "single" and (os.environ['LOGGING_MODE']) != "daily":
      log_die('[1002] Logging mode has invalid value (supported values "daily", "single")')
+# 1003 check if user id is set 
+if "USER_ID" not in os.environ or os.environ["USER_ID"] == "":
+    log_die('[1003] User ID is not set')
+# 1004 check if password is set 
+if "PASSWORD" not in os.environ or os.environ["PASSWORD"] == "":
+    log_die('[1004] Password is not set')
