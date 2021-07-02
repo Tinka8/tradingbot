@@ -35,3 +35,7 @@ logging.debug('Welcome text printed')
 # login user
 message.login(os.environ['USER_ID'], os.environ['PASSWORD'])
 print("Successfully logged in")
+
+# check instruments
+instruments = message.get_trading_hours(['EURUSD', 'EURPLN'])
+print(instruments)
