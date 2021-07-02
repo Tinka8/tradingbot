@@ -3,9 +3,11 @@ import enum
 import json
 import logging
 from websocket import create_connection
+
 class STATUS(enum.Enum):
     LOGGED = enum.auto()
     NOT_LOGGED = enum.auto()
+    
 class Bot:
     def __init__(self):
         
@@ -48,3 +50,15 @@ class Bot:
 
         return result
     
+    def get_trading_hours(self, instruments):
+        
+        data = {
+            "command": "getTradingHours",
+            "arguments" : {
+                "symbols": instruments
+            }
+        }
+
+        return self._send_command(data)
+        
+
