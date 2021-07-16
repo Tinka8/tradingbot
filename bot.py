@@ -2,7 +2,9 @@ import os
 import enum 
 import json
 import logging
+import datetime
 from websocket import create_connection
+from datetime import date
 
 class STATUS(enum.Enum):
     LOGGED = enum.auto()
@@ -61,4 +63,17 @@ class Bot:
 
         return self._send_command(data)
         
-
+    def is_market_open(self, instruments): 
+        open_time = datetime.time(hour = 10, minute = 45, second = 0)
+        close_time = datetime.time(hour = 19, minute = 30, second = 0)
+        today = date.today()
+        # check if time is between 10.45 and 19.30
+        if today.time() <= open_time or today.time() >= close_time:
+            return True
+        else:
+            print("Market for COCOA is closed now!")
+        # check if it's weekday today 
+        if today.date().weekday() <= 5:
+            return True  
+        else:
+            print("Market for COCOA is closed now!")

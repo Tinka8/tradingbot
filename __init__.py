@@ -37,5 +37,12 @@ message.login(os.environ['USER_ID'], os.environ['PASSWORD'])
 print("Successfully logged in")
 
 # check instruments
-instruments = message.get_trading_hours(['EURUSD', 'EURPLN'])
+instruments = message.get_trading_hours(['COCOA'])
 print(instruments)
+
+# check if market is open
+market_open = message.is_market_open('COCOA')
+if (market_open):
+    print("Market for COCOA is opened now!")
+else:
+    print("Market for COCOA is closed now!")
