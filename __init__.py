@@ -1,6 +1,7 @@
 import os
 import logging
 import subprocess
+import datetime
 from bot import Bot
 from datetime import date
 
@@ -13,6 +14,12 @@ if (result == 1):
 
 # current date
 today = date.today()
+
+# current day
+day = datetime.datetime.now()
+
+# current time 
+now = datetime.datetime.now()
 
 # logging mode type 
 if (os.environ['LOGGING_MODE']) == 'single':
@@ -49,4 +56,9 @@ if (market_open):
     print('Market for ' + ', '.join(instruments) + ' is opened now!')
 else:
     print('Market for ' + ', '.join(instruments) + ' is closed now!')
-    
+
+# check current time and day and print market status 
+if (market_open):
+    print('It is ' +  (day.strftime("%A ")) +  str(now.hour) + ':' + str(now.minute) + ' and market for COCOA is opened now!')
+else:
+    print('It is ' +  (day.strftime("%A ")) +  str(now.hour) + ':' + str(now.minute) + ' and market for COCOA is closed now!')
