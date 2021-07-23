@@ -16,10 +16,6 @@ class Bot:
         self.welcome_text = '====================\nXTB Trading bot\n@author Tinka8\n@version 0.0.2\n===================='
         self.ws = None
         self.status = STATUS.NOT_LOGGED
-    
-    def welcome(self):
-
-        return self.welcome_text
         
     def login(self, user_id, password, mode='demo'):
         """login command"""
@@ -47,8 +43,18 @@ class Bot:
         response = self.ws.recv()
         
         result = json.loads(response)
+
         if result['status'] is True:
             logging.info('Executed command: ' + dict_data["command"])
+        if result['status'] is False:
+            raise CommandFailed(result)
+        else:
+            logging.info('Executed command: ' + dict_data["command"])
+
+        if 'returnData' in result.keys():
+            logging.info("CMD: done")
+            logging.debug(result['returnData'])
+            return result['returnData']
 
         return result
     
@@ -63,17 +69,64 @@ class Bot:
 
         return self._send_command(data)
         
-    def is_market_open(self, instruments): 
-        open_time = datetime.time(hour = 10, minute = 45, second = 0)
-        close_time = datetime.time(hour = 19, minute = 30, second = 0)
-        today = date.today()
-        # check if time is between 10.45 and 19.30
-        if today.time() <= open_time or today.time() >= close_time:
-            return True
-        else:
-            print("Market for COCOA is closed now!")
-        # check if it's weekday today 
-        if today.date().weekday() <= 5:
-            return True  
-        else:
-            print("Market for COCOA is closed now!")
+    # check if market is currently opened for all listed instruments
+    # @use is_market_open(['COCOA', 'COFFEE'])
+    def is_market_open(self, instruments):
+        # get opening hours for listed instruments
+        opening_hours = self.get_trading_hours(instruments)
+
+        # store opened/closed per instrument
+        results = []
+
+        # loop over each instrument
+        for index, instrument in enumerate(instruments):
+            # store opening hours for specific instrument in local variable
+            instrument_opening_hours = opening_hours[index]
+
+            # get which weekday is today
+            weekday = date.today().weekday()
+
+            # define opening times for today
+            times = []
+
+            # loop over all opening hours
+            for opening in instrument_opening_hours['trading']:
+                # consider opening hours for current weekday
+                if (opening['day'] == weekday):
+                    times.append({
+                        'fromT': opening['fromT'],  # in milliseconds from midnight
+                        'toT'  : opening['toT']     # in milliseconds from midnight
+                    })
+
+            # define current milliseconds from midnight
+            now = datetime.datetime.now()
+            milliseconds_since_midnight = (now - now.replace(hour=0, minute=0, second=0, microsecond=0)).total_seconds() * 1000
+
+            # set default value for opened/closed
+            opened = False
+
+            for opening_time in times:
+                if (opening_time['fromT'] < milliseconds_since_midnight and opening_time['toT'] > milliseconds_since_midnight):
+                    opened = True
+            
+            # store result in list of results
+            results.append({
+                'instrument': instrument,
+                'opened'    : opened
+            })
+        
+        # get only closed
+        closed = list(filter(self.check_is_closed_result, results))
+        
+        # return true, if all checked instruments are opened (array of closed is empty)
+        return len(closed) == 0
+
+    def check_is_closed_result(self, result):
+        return result['opened'] != True
+
+    def check_is_opened_result(self, result):
+        return result['opened']
+
+    def welcome(self):
+
+        return self.welcome_text
