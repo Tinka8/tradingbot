@@ -4,6 +4,7 @@ import subprocess
 import datetime
 from bot import Bot
 from datetime import date
+from tabulate import tabulate
 
 # run integrity checks
 result = subprocess.call("pipenv run python integrity.py", shell=True)
@@ -62,3 +63,14 @@ if (market_open):
     print('It is ' +  (day.strftime("%A ")) +  str(now.hour) + ':' + str(now.minute) + ' and market for COCOA is opened now!')
 else:
     print('It is ' +  (day.strftime("%A ")) +  str(now.hour) + ':' + str(now.minute) + ' and market for COCOA is closed now!')
+
+# trading hours for COCOA
+table = [
+            ['Day', 'fromT', 'toT'], 
+            ['Monday', '10.45', '19.30'], 
+            ['Tuesday', '10.45', '19.30'],
+            ['Wednesday', '10.45', '19.30'],
+            ['Thursday', '10.45', '19.30'],
+            ['Friday', '10.45', '19.30'],
+        ]
+print('COCOA trading hours: \n',(tabulate(table)))
