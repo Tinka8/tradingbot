@@ -27,22 +27,26 @@ logging.basicConfig(filename=logging_filename, format='%(asctime)s - %(levelname
 logging.info('Started')
 
 
-message = Bot()
+bot = Bot()
+
 # welcome message
-print(message.welcome())
+print(bot.welcome())
 logging.debug('Welcome text printed')
 
 # login user
-message.login(os.environ['USER_ID'], os.environ['PASSWORD'])
+bot.login(os.environ['USER_ID'], os.environ['PASSWORD'])
 print("Successfully logged in")
 
-# check instruments
-instruments = message.get_trading_hours(['COCOA'])
-print(instruments)
+# set instruments
+instruments = ['COCOA', 'COFFEE']
 
-# check if market is open
-market_open = message.is_market_open('COCOA')
+# check instruments
+trading_hours = bot.get_trading_hours(instruments)
+
+# check if market is open for specific instruments
+market_open = bot.is_market_open(instruments)
 if (market_open):
-    print("Market for COCOA is opened now!")
+    print('Market for ' + ', '.join(instruments) + ' is opened now!')
 else:
-    print("Market for COCOA is closed now!")
+    print('Market for ' + ', '.join(instruments) + ' is closed now!')
+    
